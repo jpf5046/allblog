@@ -1,8 +1,8 @@
 ---
 title: "Creating Custom Visuals in R for PowerBi"
-author: "John F"
-date: "September 30, 2017"
-output: html_document
+author: John F
+date: '2017-10-04'
+slug: test
 ---
 
 ```{r setup, include=FALSE}
