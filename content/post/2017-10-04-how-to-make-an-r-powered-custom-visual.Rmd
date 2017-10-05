@@ -1,8 +1,14 @@
 ---
-title: "Creating Custom Visuals in R for PowerBi"
+title: How to Make an R Powered Custom Visual
 author: John F
 date: '2017-10-04'
-slug: test
+slug: how-to-make-an-r-powered-custom-visual
+categories:
+  - Power BI
+  - Custom Visual
+tags:
+  - R
+  - Power BI
 ---
 
 ```{r setup, include=FALSE}
@@ -160,13 +166,6 @@ This is your news packaged Power BI custom visual, this is the file you choose i
 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/cqqa3EhFS1c" frameborder="0" allowfullscreen></iframe>
-
-
-
-
-
-
-
 
 
 
