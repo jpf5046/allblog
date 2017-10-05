@@ -1,0 +1,172 @@
+---
+title: "Creating Custom Visuals in R for PowerBi"
+author: "John F"
+date: "September 30, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(plotly)
+```
+
+
+## Power BI Custom Visuals
+
+This is a walkthrough on creating custom visuals for Power BI, specifically, R powered custom Visuals. The end product will be similar to the custom visuals found [here](https://powerbi.microsoft.com/en-us/documentation/powerbi-desktop-r-powered-custom-visuals/).  
+
+By the end of this tutorial we will have the following Plotly Scatter 3D chart--fully interactive in Power BI as a custom visual. 
+
+```{r, echo= FALSE}
+p <- plot_ly(mtcars, x = ~wt, y = ~hp, z = ~qsec, color = ~cyl, colors = c('#BF382A', '#0C4B8E')) %>%
+  add_markers() %>%
+  layout(scene = list(xaxis = list(title = 'Weight'),
+                     yaxis = list(title = 'Gross horsepower'),
+                     zaxis = list(title = '1/4 mile time')))
+
+p
+
+```
+
+
+There are five steps to creating custom visuals in Power BI. This guide will cover all of them. Here is the list of steps:
+
+
+1. Download and Install [node.js](https://nodejs.org/en/)
+2. Generate a pre-Packaged visual with node.js 
+3. Edit packaged visual in a Rstudio
+4. Complie Visual in cmd line 
+5. Import into Power BI 
+
+### Step One, Installing node.js
+
+Easiest part. Use the link above.
+
+
+
+
+
+
+### Step Two, Create a Pre Packaged Visual with node.js
+
+1. Open command line and type in the following: `pbiviz new Rpoweredcustomvisual - t rhtml`
+      + `Rpoweredcustomvisual` can be anything the user wants to name the visual
+2. Then type `cd Rpoweredcustomvisual`
+3. Then type `npm i powerbi-visuals-utils-dataviewutils` 
+4. Then type `pbiviz start` 
+
+There you go, your command line should look like this: 
+\center ![](pictures/CommandLineAfterRvisualpromt.PNG) \center
+
+__Before we move to step 3__ 
+Let's look at what we created in step 2. 
+
+1. Go to your User folder, open the User folder you are using
+2. Look for a file named `RpoweredCustomvisual` 
+      + ...or whatever was decided to name the visual
+3. Open the folder 
+
+It should look exactly like this:
+
+  \center ![](pictures/What the Packaged R Visual Looks like.PNG) \center
+
+
+
+
+
+
+
+
+### Step Three, Edit the folder we created in Step Two
+
+Edit the R script found in the file created in Step Two. 
+
+![](pictures/Rscipt location.PNG)
+
+We open up the Rscript and see the following code:
+
+![](pictures/What the R Script Looks Like before.PNG)
+
+__Then we make our R code changes__ 
+
+Let's copy and paste our plotly code: 
+
+```{r, eval = FALSE}
+
+p <- Values %>%
+  plot_ly( x = ~wt, y = ~hp, z = ~qsec, color = ~cyl, colors = c('#BF382A', '#0C4B8E')) %>%
+  add_markers() %>%
+  layout(scene = list(xaxis = list(title = 'Weight'),
+                      yaxis = list(title = 'Gross horsepower'),
+                      zaxis = list(title = '1/4 mile time')));
+
+internalSaveWidget(p, 'out.html');
+
+```
+
+We see the new R code in our Rscript file now. Now we overwrite this new R script and save in our `Rpoweredcustomvisual` folder. 
+
+![](pictures/What the code looks like after changing R Script 4.PNG)
+
+After saving the file, we made all the changes neccessary. Let's package the visual and bring it into Power BI. 
+
+
+
+
+
+
+
+### Step Four, Package the Visual
+
+1. Go back to your command line an type `pbiviz package` -- you might have to type `ctrl+c` to terminate listening
+
+  ![](pictures/packageVisual.PNG)
+
+2. Go to the same file you created in step two, there is going to be a new folder
+
+  ![](pictures/new fodler created after PACKAGE step.PNG)
+
+This is your news packaged Power BI custom visual, this is the file you choose in step five. 
+
+
+
+
+
+
+
+### Step Five, Bring into Power BI
+
+
+1. Import Custom Visual 
+
+![](pictures/Import custom Visual Power BI.PNG)
+
+2. Go to the `Rpoweredcustomvisual` folder created in step two, delect the `dist` folder 
+
+![](pictures/CustomVisual in folder.PNG)
+
+3. Select your visual
+
+4. Create data -- make sure column names are the same as the R code
+
+![](pictures\random data for visual.PNG)
+
+5. Put the custom visual on the Power BI canvas 
+
+6. Drag and drop the data fields into the visual.
+
+7. Your final visual should look like this:
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/cqqa3EhFS1c" frameborder="0" allowfullscreen></iframe>
+
+
+
+
+
+
+
+
+
+
