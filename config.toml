@@ -1,6 +1,6 @@
 baseurl = "/"
 languageCode = "en-us"
-title = "Swag Site 1000"
+title = "Hello World"
 theme = "hugo-lithium-theme"
 googleAnalytics = ""
 disqusShortname = ""
