@@ -1,7 +1,7 @@
 ---
 title: "StockScrapeR"
 author: "John Friel"
-date: "2018-1-29"
+date: "2018-01-29"
 output: html_document
 ---
 
