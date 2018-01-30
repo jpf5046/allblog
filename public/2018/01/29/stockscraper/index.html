@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.29" />
+
+
+<title>StockScrapeR - Hello World</title>
+<meta property="og:title" content="StockScrapeR - Hello World">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/me.jpg"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/categories/">Categories</a></li>
+    
+    <li><a href="https://github.com/jpf5046">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/jpf5046">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">3 min read</span>
+    
+
+    <h1 class="article-title">StockScrapeR</h1>
+
+    
+    <span class="article-date">2018/01/29</span>
+    
+
+    <div class="article-content">
+      
+
+<pre><code class="language-r setup, include=FALSE">knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(rvest)
+library(plyr)
+#devtools::install_github(&quot;wch/webshot&quot;)
+library(webshot)
+</code></pre>
+
+<h2 id="scan-stock-market-with-rvest-and-webshot-problem">Scan Stock Market With Rvest and Webshot problem</h2>
+
+<p>I wanted a way to look at stocks charts that quickly fit the range of investment I was looking to make.</p>
+
+<h1 id="let-s-grab-all-stocks-on-the-nyse">Let&rsquo;s Grab all Stocks on the NYSE</h1>
+
+<p>The following script will run rvest on a loop, each loop opens a new webpage. so the first run through opens eoddata.com/stocklist/NYSE/a.htm then grabs all stock information for Stock Tickers beginning with the letter A.</p>
+
+<pre><code class="language-r">
+# creating a shell for putting scrapped info into
+allnyse &lt;- data.frame()
+
+# createing results array for refined table after completeing the scrape
+resultsarraynyse &lt;- data.frame()
+
+# creating a list that allows the loop to be completed
+abcs &lt;- c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;, &quot;f&quot;, &quot;g&quot;, &quot;h&quot;, &quot;i&quot;,
+          &quot;j&quot;, &quot;k&quot;, &quot;l&quot;, &quot;m&quot;, &quot;n&quot;, &quot;o&quot;, &quot;p&quot;, &quot;q&quot;, &quot;r&quot;,
+          &quot;s&quot;, &quot;t&quot;, &quot;u&quot;, &quot;v&quot;, &quot;w&quot;, &quot;x&quot;, &quot;y&quot;, &quot;z&quot;)
+
+# first loop for grabbing stock data
+for (i in abcs) {
+  
+  # this is the website that the loop is getting information from
+  url &lt;- paste(&quot;http://eoddata.com/stocklist/NYSE/&quot;, i, &quot;.htm&quot;, sep=&quot;&quot;)
+  
+  url &lt;- read_html(url)
+  
+  # results arrary is stacking the peicing of information needed into a dtafram
+  # notice I define 'stockticker' 'stockname' and 'closeprice' 
+  # html_nodes is from slector gadget 
+  resultsarraynyse &lt;- data.frame(stockticker = url %&gt;% 
+                               html_nodes(xpath = '//*[(@id = &quot;ctl00_cph1_divSymbols&quot;)]//td[(((count(preceding-sibling::*) + 1) = 1) and parent::*)]') %&gt;%
+                               html_text(), 
+                             stockname = url %&gt;% 
+                               html_nodes(xpath = '//*[(@id = &quot;ctl00_cph1_divSymbols&quot;)]//td[(((count(preceding-sibling::*) + 1) = 2) and parent::*)]') %&gt;%
+                               html_text(),
+                             closeprice =  url %&gt;% 
+                               html_nodes(xpath = '//*[(@id = &quot;ctl00_cph1_divSymbols&quot;)]//td[(((count(preceding-sibling::*) + 1) = 5) and parent::*)]') %&gt;%
+                               html_text(),
+                              stringsAsFactors = FALSE)
+  
+  # compile all information into dataframe
+  allnyse &lt;- rbind.fill(allnyse, resultsarraynyse)
+  
+}
+
+head(allnyse)
+
+</code></pre>
+
+<p>Now  have a data frame with the Ticker, close price and stock name. Let&rsquo;s do the same thing with NASDAQ:</p>
+
+<pre><code class="language-r">
+
+allnasdaq &lt;- data.frame()
+
+resultsarraynasdaq &lt;- data.frame()
+
+# this is the same looping action described above
+abcs &lt;- c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;, &quot;f&quot;, &quot;g&quot;, &quot;h&quot;, &quot;i&quot;,
+          &quot;j&quot;, &quot;k&quot;, &quot;l&quot;, &quot;m&quot;, &quot;n&quot;, &quot;o&quot;, &quot;p&quot;, &quot;q&quot;, &quot;r&quot;,
+          &quot;s&quot;, &quot;t&quot;, &quot;u&quot;, &quot;v&quot;, &quot;w&quot;, &quot;x&quot;, &quot;y&quot;, &quot;z&quot;)
+
+
+for (i in abcs) {
+  
+  url &lt;- paste(&quot;http://eoddata.com/stocklist/NASDAQ.htm&quot;, i, &quot;.htm&quot;, sep=&quot;&quot;)
+  
+  url &lt;- read_html(url)
+  
+  resultsarraynasdaq &lt;- data.frame(stockticker = url %&gt;% 
+                               html_nodes(xpath = '//*[(@id = &quot;ctl00_cph1_divSymbols&quot;)]//td[(((count(preceding-sibling::*) + 1) = 1) and parent::*)]') %&gt;%
+                               html_text(), 
+                             stockname = url %&gt;% 
+                               html_nodes(xpath = '//*[(@id = &quot;ctl00_cph1_divSymbols&quot;)]//td[(((count(preceding-sibling::*) + 1) = 2) and parent::*)]') %&gt;%
+                               html_text(),
+                             closeprice =  url %&gt;% 
+                               html_nodes(xpath = '//*[(@id = &quot;ctl00_cph1_divSymbols&quot;)]//td[(((count(preceding-sibling::*) + 1) = 5) and parent::*)]') %&gt;%
+                               html_text(),
+                             stringsAsFactors = FALSE)
+  
+  
+  allnasdaq &lt;- rbind.fill(allnasdaq, resultsarraynasdaq)
+  
+}
+
+head(allnasdaq)
+</code></pre>
+
+<p>Now let&rsquo;s combine the two</p>
+
+<pre><code class="language-r"># combine the stocks
+allstocks &lt;- rbind(allnyse, allnasdaq)
+
+# make sure close price is numeric
+allstocks &lt;- transform(allstocks, closeprice = as.numeric(closeprice))
+
+allstocks &lt;- unique(allstocks)
+
+head(allstocks)
+
+</code></pre>
+
+<p>Okay, I&rsquo;m a risky investor, so let&rsquo;s look at stocks that cost between 2.50 and 2.75 :</p>
+
+<pre><code class="language-r">StockstoInvest &lt;- allstocks %&gt;% filter(closeprice &gt;= 2.5 &amp; closeprice &lt; 2.75)
+
+head(StockstoInvest)
+
+</code></pre>
+
+<p>I have 16 stocks I can look at, but let&rsquo;s use <code>webshot</code> to do the heavy lifting for us:</p>
+
+<pre><code class="language-r">
+
+for (i in StockstoInvest$stockticker) {
+ 
+  wurlShot &lt;- paste(&quot;http://www.nasdaq.com/symbol/&quot;,i, &quot;/stock-chart&quot;, sep = '')
+ 
+  
+  savepngname &lt;- paste('&quot;', i, &quot;.png&quot;)
+ 
+  webshot(wurlShot, file = paste('testfolder/',i, '.png', sep =''),  selector = &quot;.marginT5px img&quot;)
+ 
+}
+</code></pre>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

@@ -6,10 +6,20 @@
     <description>Recent content on Hello World</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 29 Oct 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 29 Jan 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>StockScrapeR</title>
+      <link>/2018/01/29/stockscraper/</link>
+      <pubDate>Mon, 29 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/29/stockscraper/</guid>
+      <description>knitr::opts_chunk$set(echo = TRUE) library(tidyverse) library(rvest) library(plyr) #devtools::install_github(&amp;quot;wch/webshot&amp;quot;) library(webshot)  Scan Stock Market With Rvest and Webshot problem I wanted a way to look at stocks charts that quickly fit the range of investment I was looking to make.
+Let&amp;rsquo;s Grab all Stocks on the NYSE The following script will run rvest on a loop, each loop opens a new webpage. so the first run through opens eoddata.com/stocklist/NYSE/a.htm then grabs all stock information for Stock Tickers beginning with the letter A.</description>
+    </item>
     
     <item>
       <title>Heisman</title>
@@ -47,16 +57,6 @@ By the end of this tutorial we will have the following Plotly Scatter 3D chartâ€
       
       <guid>/about/</guid>
       <description>Highly analytical and process oriented data analyst with 5+ years of experience. Aiming to utilize my strong sales experience and analytical ability to achieve the goals of your company. Double major from Penn State University with a Master&amp;rsquo;s degree from Southern Methodist in Business Analytics. Excellent Power BI skills. Three years experience in R and SQL.</description>
-    </item>
-    
-    <item>
-      <title>StockScrapeR</title>
-      <link>/1/01/01/stockscraper/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/1/01/01/stockscraper/</guid>
-      <description>knitr::opts_chunk$set(echo = TRUE) library(tidyverse) library(rvest) library(plyr) #devtools::install_github(&amp;quot;wch/webshot&amp;quot;) library(webshot)  Scan Stock Market With Rvest and Webshot problem I wanted a way to look at stocks charts that quickly fit the range of investment I was looking to make.
-Let&amp;rsquo;s Grab all Stocks on the NYSE The following script will run rvest on a loop, each loop opens a new webpage. so the first run through opens eoddata.com/stocklist/NYSE/a.htm then grabs all stock information for Stock Tickers beginning with the letter A.</description>
     </item>
     
   </channel>
