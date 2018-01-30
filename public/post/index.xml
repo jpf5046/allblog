@@ -40,5 +40,15 @@ By the end of this tutorial we will have the following Plotly Scatter 3D chartâ€
       <description>Heismancode{white-space: pre;}pre:not([class]) {background-color: white;}if (window.hljs &amp;&amp; document.readyState &amp;&amp; document.readyState === &#34;complete&#34;) {window.setTimeout(function() {hljs.initHighlighting();}, 0);}h1 {font-size: 34px;}h1.title {font-size: 38px;}h2 {font-size: 30px;}h3 {font-size: 24px;}h4 {font-size: 18px;}h5 {font-size: 16px;}h6 {font-size: 12px;}.table th:not([align]) {text-align: left;}.</description>
     </item>
     
+    <item>
+      <title>StockScrapeR</title>
+      <link>/1/01/01/stockscraper/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/1/01/01/stockscraper/</guid>
+      <description>knitr::opts_chunk$set(echo = TRUE) library(tidyverse) library(rvest) library(plyr) #devtools::install_github(&amp;quot;wch/webshot&amp;quot;) library(webshot)  Scan Stock Market With Rvest and Webshot problem I wanted a way to look at stocks charts that quickly fit the range of investment I was looking to make.
+Let&amp;rsquo;s Grab all Stocks on the NYSE The following script will run rvest on a loop, each loop opens a new webpage. so the first run through opens eoddata.com/stocklist/NYSE/a.htm then grabs all stock information for Stock Tickers beginning with the letter A.</description>
+    </item>
+    
   </channel>
 </rss>
