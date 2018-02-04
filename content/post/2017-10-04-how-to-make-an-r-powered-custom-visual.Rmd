@@ -63,7 +63,7 @@ Easiest part. Use the link above.
 4. Then type `pbiviz start` 
 
 There you go, your command line should look like this: 
-\center ![](/public/images/CommandLineAfterRvisualpromt.PNG) \center
+\center ![](/images/CommandLineAfterRvisualpromt.PNG) \center
 
 __Before we move to step 3__ 
 Let's look at what we created in step 2. 
@@ -75,7 +75,7 @@ Let's look at what we created in step 2.
 
 It should look exactly like this:
 
-  \center ![](/public/images/What the Packaged R Visual Looks like.PNG) \center
+  \center ![](/images/What the Packaged R Visual Looks like.PNG) \center
 
 
 
