@@ -63,7 +63,7 @@ Easiest part. Use the link above.
 4. Then type `pbiviz start` 
 
 There you go, your command line should look like this: 
-\center ![](pictures/CommandLineAfterRvisualpromt.PNG) \center
+\center ![](/static/images/CommandLineAfterRvisualpromt.PNG) \center
 
 __Before we move to step 3__ 
 Let's look at what we created in step 2. 
@@ -75,7 +75,7 @@ Let's look at what we created in step 2.
 
 It should look exactly like this:
 
-  \center ![](pictures/What the Packaged R Visual Looks like.PNG) \center
+  \center ![](/static/images/What the Packaged R Visual Looks like.PNG) \center
 
 
 
@@ -88,7 +88,7 @@ It should look exactly like this:
 
 Edit the R script found in the file created in Step Two. 
 
-![](pictures/Rscipt location.PNG)
+![](/static/images/Rscipt location.PNG)
 
 We open up the Rscript and see the following code:
 
@@ -113,7 +113,7 @@ internalSaveWidget(p, 'out.html');
 
 We see the new R code in our Rscript file now. Now we overwrite this new R script and save in our `Rpoweredcustomvisual` folder. 
 
-![](pictures/What the code looks like after changing R Script 4.PNG)
+![](/static/images/What the code looks like after changing R Script 4.PNG)
 
 After saving the file, we made all the changes neccessary. Let's package the visual and bring it into Power BI. 
 
@@ -127,11 +127,11 @@ After saving the file, we made all the changes neccessary. Let's package the vis
 
 1. Go back to your command line an type `pbiviz package` -- you might have to type `ctrl+c` to terminate listening
 
-  ![](pictures/packageVisual.PNG)
+  ![](/static/images/packageVisual.PNG)
 
 2. Go to the same file you created in step two, there is going to be a new folder
 
-  ![](pictures/new fodler created after PACKAGE step.PNG)
+  ![](/static/images/new fodler created after PACKAGE step.PNG)
 
 This is your news packaged Power BI custom visual, this is the file you choose in step five. 
 
@@ -146,17 +146,17 @@ This is your news packaged Power BI custom visual, this is the file you choose i
 
 1. Import Custom Visual 
 
-![](pictures/Import custom Visual Power BI.PNG)
+![](/static/images/Import custom Visual Power BI.PNG)
 
 2. Go to the `Rpoweredcustomvisual` folder created in step two, delect the `dist` folder 
 
-![](pictures/CustomVisual in folder.PNG)
+![](/static/images/CustomVisual in folder.PNG)
 
 3. Select your visual
 
 4. Create data -- make sure column names are the same as the R code
 
-![](pictures\random data for visual.PNG)
+![](/static/images/random data for visual.PNG)
 
 5. Put the custom visual on the Power BI canvas 
 
