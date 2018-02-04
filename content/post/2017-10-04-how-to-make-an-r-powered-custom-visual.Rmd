@@ -88,11 +88,11 @@ It should look exactly like this:
 
 Edit the R script found in the file created in Step Two. 
 
-![](/static/images/Rscipt location.PNG)
+![](/images/Rscipt location.PNG)
 
 We open up the Rscript and see the following code:
 
-![](pictures/What the R Script Looks Like before.PNG)
+![](/images/What the R Script Looks Like before.PNG)
 
 __Then we make our R code changes__ 
 
@@ -113,7 +113,7 @@ internalSaveWidget(p, 'out.html');
 
 We see the new R code in our Rscript file now. Now we overwrite this new R script and save in our `Rpoweredcustomvisual` folder. 
 
-![](/static/images/What the code looks like after changing R Script 4.PNG)
+![](/images/What the code looks like after changing R Script 4.PNG)
 
 After saving the file, we made all the changes neccessary. Let's package the visual and bring it into Power BI. 
 
@@ -127,11 +127,11 @@ After saving the file, we made all the changes neccessary. Let's package the vis
 
 1. Go back to your command line an type `pbiviz package` -- you might have to type `ctrl+c` to terminate listening
 
-  ![](/static/images/packageVisual.PNG)
+  ![](/images/packageVisual.PNG)
 
 2. Go to the same file you created in step two, there is going to be a new folder
 
-  ![](/static/images/new fodler created after PACKAGE step.PNG)
+  ![](/images/new fodler created after PACKAGE step.PNG)
 
 This is your news packaged Power BI custom visual, this is the file you choose in step five. 
 
@@ -146,17 +146,17 @@ This is your news packaged Power BI custom visual, this is the file you choose i
 
 1. Import Custom Visual 
 
-![](/static/images/Import custom Visual Power BI.PNG)
+![](/images/Import custom Visual Power BI.PNG)
 
 2. Go to the `Rpoweredcustomvisual` folder created in step two, delect the `dist` folder 
 
-![](/static/images/CustomVisual in folder.PNG)
+![](/images/CustomVisual in folder.PNG)
 
 3. Select your visual
 
 4. Create data -- make sure column names are the same as the R code
 
-![](/static/images/random data for visual.PNG)
+![](/images/random data for visual.PNG)
 
 5. Put the custom visual on the Power BI canvas 
 
