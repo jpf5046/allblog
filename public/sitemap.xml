@@ -18,10 +18,6 @@
   </url>
   
   <url>
-    <loc>/1/01/01/</loc>
-  </url>
-  
-  <url>
     <loc>/about/</loc>
   </url>
   
@@ -43,13 +39,13 @@
   </url>
   
   <url>
-    <loc>/tags/power-bi/</loc>
+    <loc>/categories/power-bi/</loc>
     <lastmod>2017-10-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/power-bi/</loc>
+    <loc>/tags/power-bi/</loc>
     <lastmod>2017-10-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
