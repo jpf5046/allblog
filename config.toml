@@ -1,6 +1,6 @@
 baseurl = "/"
 languageCode = "en-us"
-title = "Hello World"
+title = "a John Friel website"
 theme = "hugo-lithium-theme"
 googleAnalytics = ""
 disqusShortname = ""
@@ -20,9 +20,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 [[menu.main]]
     name = "Twitter"
     url = "https://twitter.com/jpf5046"
-[[menu.main]]
-    name = "Categories"
-    url = "/categories/"
+
 [params]
     description = "A website built through Hugo and blogdown."
 

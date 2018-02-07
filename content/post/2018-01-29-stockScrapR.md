@@ -48,10 +48,16 @@ for (i in abcs) {
   # notice I define 'stockticker' 'stockname' and 'closeprice' 
   # html_nodes is from slector gadget 
   resultsarraynyse <- data.frame(stockticker = url %>% 
-                               html_nodes(xpath = '//*[(@id = "ctl00_cph1_divSymbols")]//td[(((count(preceding-sibling::*) + 1) = 1) and parent::*)]') %>%
-                               html_text(), 
-                             stockname = url %>% 
-                               html_nodes(xpath = '//*[(@id = "ctl00_cph1_divSymbols")]//td[(((count(preceding-sibling::*) + 1) = 2) and parent::*)]') %>%
+  html_nodes(xpath =
+  '//*[(@id = "ctl00_cph1_divSymbols")]//td[(((count(preceding-sibling::*) + 1) = 1) and parent::*)]')
+  %>%
+ 
+  html_text(), 
+ 
+  stockname = url %>% 
+  
+  html_nodes(xpath = 
+  '//*[(@id = "ctl00_cph1_divSymbols")]//td[(((count(preceding-sibling::*) + 1) = 2) and parent::*)]') %>%
                                html_text(),
                              closeprice =  url %>% 
                                html_nodes(xpath = '//*[(@id = "ctl00_cph1_divSymbols")]//td[(((count(preceding-sibling::*) + 1) = 5) and parent::*)]') %>%
