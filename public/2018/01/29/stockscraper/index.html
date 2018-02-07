@@ -6,8 +6,8 @@
 <meta name="generator" content="Hugo 0.29" />
 
 
-<title>StockScrapeR - Hello World</title>
-<meta property="og:title" content="StockScrapeR - Hello World">
+<title>StockScrapeR - a John Friel website</title>
+<meta property="og:title" content="StockScrapeR - a John Friel website">
 
 
 
@@ -44,8 +44,6 @@
   <ul class="nav-links">
     
     <li><a href="/about/">About</a></li>
-    
-    <li><a href="/categories/">Categories</a></li>
     
     <li><a href="https://github.com/jpf5046">GitHub</a></li>
     
@@ -114,10 +112,16 @@ for (i in abcs) {
   # notice I define 'stockticker' 'stockname' and 'closeprice' 
   # html_nodes is from slector gadget 
   resultsarraynyse &lt;- data.frame(stockticker = url %&gt;% 
-                               html_nodes(xpath = '//*[(@id = &quot;ctl00_cph1_divSymbols&quot;)]//td[(((count(preceding-sibling::*) + 1) = 1) and parent::*)]') %&gt;%
-                               html_text(), 
-                             stockname = url %&gt;% 
-                               html_nodes(xpath = '//*[(@id = &quot;ctl00_cph1_divSymbols&quot;)]//td[(((count(preceding-sibling::*) + 1) = 2) and parent::*)]') %&gt;%
+  html_nodes(xpath =
+  '//*[(@id = &quot;ctl00_cph1_divSymbols&quot;)]//td[(((count(preceding-sibling::*) + 1) = 1) and parent::*)]')
+  %&gt;%
+ 
+  html_text(), 
+ 
+  stockname = url %&gt;% 
+  
+  html_nodes(xpath = 
+  '//*[(@id = &quot;ctl00_cph1_divSymbols&quot;)]//td[(((count(preceding-sibling::*) + 1) = 2) and parent::*)]') %&gt;%
                                html_text(),
                              closeprice =  url %&gt;% 
                                html_nodes(xpath = '//*[(@id = &quot;ctl00_cph1_divSymbols&quot;)]//td[(((count(preceding-sibling::*) + 1) = 5) and parent::*)]') %&gt;%
