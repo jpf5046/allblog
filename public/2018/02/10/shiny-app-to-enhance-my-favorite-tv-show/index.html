@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.29" />
+
+
+<title>Shiny App to Enhance my Favorite TV Show - a John Friel website</title>
+<meta property="og:title" content="Shiny App to Enhance my Favorite TV Show - a John Friel website">
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/me.jpg"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/jpf5046">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/jpf5046">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">3 min read</span>
+    
+
+    <h1 class="article-title">Shiny App to Enhance my Favorite TV Show</h1>
+
+    
+    <span class="article-date">2018/02/10</span>
+    
+
+    <div class="article-content">
+      
+
+<hr />
+
+<p>title: &ldquo;Shiny App to Enhance my Favorite TV Show&rdquo;
+author: &ldquo;John Friel&rdquo;
+date: &lsquo;2018-02-10&rsquo;
+slug: Shiny-App-to-Enhance-My-Favorite-TV-Show
+categories:
+  - Shiny
+tags:</p>
+
+<h2 id="shiny">- Shiny</h2>
+
+<h2 id="enhancing-shark-tank-net-worth-compare-tool">Enhancing Shark Tank &ndash; Net Worth Compare Tool</h2>
+
+<p>At some point in an episode of Shark Tank I end up thinking: &ldquo;Well Mark Cuban is worth 3 billion so this deal is the equivalent of me investing 15 dollars.&rdquo; I use estimates and never fully know what each Shark is worth. It also depends on how much the end user is worth. If my parents were to have the same thought, a 200 thousand dollar investment from Cuban, might be similar to a 30 dollar investment from my parents due to higher net worth.</p>
+
+<h2 id="must-be-a-better-way">Must be a better way</h2>
+
+<p>To quickly allow myself to compare different deals while I&rsquo;m watching Shark Tank I created the following Shiny app. It pulls Net Worth information from the Sharks and allows end user to put in his or her net worth. A quick calulcation is added and the Shiny app spits out what a 300 thousand dollar investment from Robert is compared to someones 450 thousand dollar home equity.</p>
+
+<h1 id="code">Code</h1>
+
+<p>Here is the code I used to write the app:</p>
+
+<pre><code class="language-r"># I did some research finding out Shark's net worth and placed in a csv 
+x &lt;- read.csv('NetWorth of Famous People.csv')
+list.of.people &lt;- as.list(x$Name)
+
+library(shiny)
+library(dplyr)
+
+
+ui &lt;- fluidPage(
+   
+  # Title 
+  titlePanel(&quot;Tool for watching Shark Tank&quot;),
+  
+  # this is the sidebar on the left when you run 
+  sidebarLayout(
+    sidebarPanel(
+      helpText( &quot;Enter in the following information:&quot;),
+      
+      # investment asking input            
+      numericInput(&quot;investmentAmount&quot;,
+                   h3(&quot;Seeking investment amount:&quot;),
+                   value = 75000),
+      
+      
+      # selection of names
+      selectInput(&quot;people&quot;,
+                  label = &quot;Which Shark is involved?&quot;,
+                  choices = list.of.people),
+      
+      # user input            
+      numericInput(&quot;userNetWorth&quot;,
+                   h3(&quot;End User's Net Worth:&quot;),
+                   value = 10000),
+      
+      # action button
+      actionButton(&quot;calculate&quot;, &quot;Calculate&quot;)
+              
+            ), 
+      
+                  
+    mainPanel(
+      helpText(&quot;Press calculate to refresh.&quot;),
+      textOutput(&quot;textsummary&quot;)
+    )
+  )
+)
+
+# Define server logic required to draw a histogram
+server &lt;- function(input, output) {
+  
+  
+  # this allows the app to use the calculate button 
+  
+  vals &lt;- reactiveValues()
+  observe({
+    vals$people &lt;- input$people
+    vals$investmentAmount &lt;- input$investmentAmount
+    vals$userNetWorth &lt;- input$userNetWorth
+    vals$personnetworth &lt;- x %&gt;% filter(Name == input$people) %&gt;% pull(Networth)
+    vals$comparison &lt;-  round( vals$investmentAmount/ vals$personnetworth * vals$userNetWorth, 2)
+    vals$networthprint &lt;- x %&gt;% filter(Name == input$people) %&gt;% pull(Networthprint)
+    
+  })
+  
+observeEvent(
+
+  input$calculate, {
+    
+    # I had a bit of an issue figuring this out, check out 
+    # this stackoverflow post to get the details     
+    # https://stackoverflow.com/questions/48244457/repetitive-output-for-shiny-rendertext
+  output$textsummary &lt;- renderText({
+                          paste(&quot;Based on seeking an investment for  &quot;, vals$investmentAmount, 
+                                &quot; from Shark &quot;, vals$people, &quot; (worth &quot;, vals$networthprint,
+                                &quot;) would be the equilivent of someone worth &quot;,
+                                vals$userNetWorth, &quot; investing $&quot;, vals$comparison)
+                                   })
+  
+                    }
+            )
+
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)
+</code></pre>
+
+<h1 id="that-s-it">That&rsquo;s it</h1>
+
+<p>Okay so that&rsquo;s all the difficult stuff. Let&rsquo;s see th app in action!</p>
+
+<p><div class="iframe_container"></p>
+
+<p><iframe width="1000" height="800" src="https://jpf5046.shinyapps.io/NetWorthCompareTool/" frameborder="1" allowfullscreen></iframe>
+</div></p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

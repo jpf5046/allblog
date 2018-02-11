@@ -6,10 +6,20 @@
     <description>Recent content in Posts on a John Friel website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 29 Jan 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 10 Feb 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Shiny App to Enhance my Favorite TV Show</title>
+      <link>/2018/02/10/shiny-app-to-enhance-my-favorite-tv-show/</link>
+      <pubDate>Sat, 10 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/02/10/shiny-app-to-enhance-my-favorite-tv-show/</guid>
+      <description>title: &amp;ldquo;Shiny App to Enhance my Favorite TV Show&amp;rdquo; author: &amp;ldquo;John Friel&amp;rdquo; date: &amp;lsquo;2018-02-10&amp;rsquo; slug: Shiny-App-to-Enhance-My-Favorite-TV-Show categories: - Shiny tags:
+- Shiny Enhancing Shark Tank &amp;ndash; Net Worth Compare Tool At some point in an episode of Shark Tank I end up thinking: &amp;ldquo;Well Mark Cuban is worth 3 billion so this deal is the equivalent of me investing 15 dollars.&amp;rdquo; I use estimates and never fully know what each Shark is worth.</description>
+    </item>
     
     <item>
       <title>StockScrapeR</title>
