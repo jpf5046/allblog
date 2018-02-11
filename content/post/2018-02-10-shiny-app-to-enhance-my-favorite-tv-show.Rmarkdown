@@ -34,7 +34,7 @@ To quickly allow myself to compare different deals while I'm watching Shark Tank
 
 Here is the code I used to write the app:
 
-```{r}
+```{r, eval = FALSE}
 
 # I did some research finding out Shark's net worth and placed in a csv 
 x <- read.csv('NetWorth of Famous People.csv')
