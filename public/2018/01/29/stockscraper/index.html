@@ -133,9 +133,14 @@ for (i in abcs) {
   
 }
 
-head(allnyse)
 
 </code></pre>
+
+<p>The loop changes the highlighted part below and then grabs the tickers circled in blue. After the loop runs, we will have all stock tickers.</p>
+
+<p>\center <img src="/images/LoopGrabbingEachTicker.PNG" alt="" /> \center</p>
+
+<h1 id="starting-nasdaq">Starting NASDAQ</h1>
 
 <p>Now  have a data frame with the Ticker, close price and stock name. Let&rsquo;s do the same thing with NASDAQ:</p>
 
@@ -173,8 +178,10 @@ for (i in abcs) {
   
 }
 
-head(allnasdaq)
+
 </code></pre>
+
+<h1 id="comebine-both-datasets">Comebine both Datasets</h1>
 
 <p>Now let&rsquo;s combine the two</p>
 
@@ -186,7 +193,6 @@ allstocks &lt;- transform(allstocks, closeprice = as.numeric(closeprice))
 
 allstocks &lt;- unique(allstocks)
 
-head(allstocks)
 
 </code></pre>
 
