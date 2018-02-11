@@ -1,19 +1,12 @@
 ---
-title: "StockScrapeR"
-author: "John Friel"
-date: '2018-01-29'
-output: html_document
+title: How to Make a Web Scraper for Stock Ticker in R
+author: John Friel
+date: '2018-02-10'
+slug: how-to-make-a-web-scraper-for-stock-ticker-in-r
+categories: []
+tags: []
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-
-library(tidyverse)
-library(rvest)
-library(plyr)
-#devtools::install_github("wch/webshot")
-library(webshot)
-```
 
 ## Scan Stock Market With Rvest and Webshot problem
 
@@ -69,6 +62,7 @@ for (i in abcs) {
   
 }
 
+head(allnyse)
 
 ```
 
@@ -115,6 +109,7 @@ for (i in abcs) {
   
 }
 
+head(allnasdaq)
 
 ```
 
