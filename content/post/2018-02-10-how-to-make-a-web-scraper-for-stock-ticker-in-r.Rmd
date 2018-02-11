@@ -7,6 +7,18 @@ categories: []
 tags: []
 ---
 
+Packages Needed
+
+```{r install packages}
+
+library(tidyverse)
+library(rvest)
+library(plyr)
+devtools::install_github("wch/webshot")
+
+
+```
+
 
 ## Scan Stock Market With Rvest and Webshot problem
 
