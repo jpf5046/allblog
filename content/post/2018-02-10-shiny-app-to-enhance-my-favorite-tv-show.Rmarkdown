@@ -122,7 +122,7 @@ Okay so that's all the difficult stuff. Let's see th app in action!
  <div class="iframe_container">
  
  
-  <iframe width="800" height="900" src="https://jpf5046.shinyapps.io/NetWorthCompareTool/" frameborder="1" allowfullscreen></iframe>
+  <iframe width="800" height="600" src="https://jpf5046.shinyapps.io/NetWorthCompareTool/" frameborder="1" allowfullscreen></iframe>
 </div>
  
 
