@@ -19,6 +19,11 @@
 
 
 
+
+<link href='//cdn.bootcss.com/highlight.js/9.11.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
 <link rel="stylesheet" href="/css/fonts.css" media="all">
 <link rel="stylesheet" href="/css/main.css" media="all">
 
@@ -54,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">4 min read</span>
     
 
     <h1 class="article-title">Heisman</h1>
@@ -64,7 +69,292 @@
     
 
     <div class="article-content">
-      <p>ghfghfg</p>
+      <pre><code class="language-r setup, eval=FALSE">library(readr)
+library(magrittr)
+library(dplyr)
+
+files = list.files(pattern = &quot;*.csv&quot;)
+
+# Loads every year from 2001 to 2017
+tbl = lapply(files, read_csv) %&gt;% bind_rows()
+
+# add a tag if it was a touchdown or not 
+
+tbl &lt;- tbl %&gt;%
+        mutate(
+          TouchdownY_N = ifelse(grepl(paste('.*',&quot;touchdown&quot;, '.*', sep=&quot;&quot;), description) | grepl(paste('.*',&quot;TD&quot;, '.*', sep=&quot;&quot;),description) |
+                                  grepl(paste('.*',&quot;TOUCHDOWN&quot;, '.*', sep=&quot;&quot;),description) , 1, 0)
+          )
+
+# add a tag if it was a 3rd down 
+
+tbl &lt;- tbl %&gt;%
+        mutate(
+          ThirdDownY_N = ifelse( tbl$down == 3, 1,0) 
+          )
+
+
+# add a tag if it was a 1st down 
+
+tbl &lt;- tbl %&gt;%
+        mutate(
+          Resultedin1stDown = ifelse(grepl(paste('.*',&quot;1ST DOWN&quot;, '.*', sep=&quot;&quot;), description) | grepl(paste('.*',&quot;first down&quot;, '.*', sep=&quot;&quot;),description) |
+                                  grepl(paste('.*',&quot;1ST down&quot;, '.*', sep=&quot;&quot;),description) , 1, 0)
+          )
+
+
+</code></pre>
+
+<pre><code class="language-r, Heisman Data Function, eval = FALSE">
+Heisman.data.prep &lt;- function(fun.team, fun.heisman,  fun.year, fun.rush.or.run){
+  
+  
+  
+  
+                 tbl %&gt;%
+                      filter(
+                        (offenseTeam == fun.team | defenseTeam == fun.team),
+                        year == fun.year
+                      ) %&gt;%
+                      mutate(
+                       
+                        
+                        player = fun.heisman,
+                         Year = fun.year,
+                        
+                         # index for game number
+                        game = match(gameId, unique(gameId)),
+              
+                        # Pass Attempt by Heisman, (Y/N)
+                        HeismanThrew = ifelse( grepl(
+                        paste('.*',fun.heisman, &quot; pass&quot;, '.*', sep=&quot;&quot;),description), 1, 0),
+                        
+                        # Rush Attempt by Heisman, (Y/N)
+                        HeismanRush = ifelse( grepl(
+                        paste('.*',fun.heisman, &quot; &quot;, fun.rush.or.run, '.*', sep=&quot;&quot;),description), 1, 0),
+                       
+                        # Return Attempt by Heisman
+                        HeismanReturn = ifelse( grepl(
+                        paste('.*',fun.heisman, &quot; return&quot;, '.*', sep=&quot;&quot;),description), 1, 0), 
+                        
+                        # Catch made by Heisman
+                        HeismanReception = ifelse( grepl(
+                        paste('.*', &quot;complete to &quot;,fun.heisman, '.*', sep=&quot;&quot;),description), 1, 0),
+                        
+                        # Tag if Heisman got sacked
+                        HeismanSacked = ifelse( grepl(
+                        paste('.*',fun.heisman, &quot; sacked&quot;, '.*', sep=&quot;&quot;),description), 1, 0),
+                        
+                        # Tag if play got first down
+                        resultinplay1stdown = ifelse( grepl(
+                        paste('.*',&quot;1ST down&quot;, '.*', sep=&quot;&quot;),description), 1, 0), 
+                        
+                        # Tag if play involved Heisman
+                        involvedHeisman = ifelse( grepl(
+                          paste('.*',fun.heisman, '.*', sep=&quot;&quot;),description), 1, 0)) %&gt;% 
+                      
+                    mutate(  
+                        # Passing Touchdown nvolving Heisman
+                        PassingTouchdownbyHeisman = ifelse(
+                          HeismanThrew == 1 &amp; TouchdownY_N ==1, 1,0
+                        ), 
+                        
+                        # Rushing Touchdown by Heisman
+                        RushingTouchdownbyHeisman = ifelse(
+                          HeismanRush ==1 &amp; TouchdownY_N ==1 , 1, 0
+                        ), 
+                        
+                        # REceiving Touchdown by Heisman 
+                        ReceivingTouchdownbyHeisman = ifelse(
+                        HeismanReception ==1 &amp; TouchdownY_N ==1,1,0
+                        ),
+                        
+                        # Return Touchdown by Heisman
+                        ReturnTouchdownbyHeisman = ifelse(
+                          HeismanReturn == 1 &amp; TouchdownY_N ==1, 1, 0
+                        ), 
+                        
+                        # third down and Heisman ha ball in hands 
+                        
+                        ThirdDownHeismanInvolved = ifelse(
+                          ThirdDownY_N == 1 &amp; involvedHeisman == 1, 1, 0
+                        ), 
+                        
+                        # third down involved heisman and converted 
+                        
+                        ThirdDownSuccesswithHeisman = ifelse(
+                          ThirdDownY_N == 1 &amp; involvedHeisman == 1 &amp; Resultedin1stDown == 1, 1, 0
+                        )
+                        
+                        
+                      ) %&gt;%
+                      group_by(player, year, week, homeTeam, awayTeam, game) %&gt;%
+                      summarise(
+                        # Game passes
+                        GamePasses = sum(HeismanThrew), 
+                        
+                        # Game rushes
+                        GameRushes = sum(HeismanRush), 
+                        
+                        # Catches by Heisman
+                        GameCatches = sum(HeismanReception), 
+                        
+                        # Times got Sacked
+                        GameSacked = sum(HeismanSacked), 
+                        
+                        # Game Yards Passing 
+                        GamePassingYards = sum(yardsGained[HeismanThrew==1]), 
+                        
+                        # Game Passing TD
+                        GamePassingTDS = sum(PassingTouchdownbyHeisman),
+                        
+                        # Game Yards Rushing 
+                        GameRushingYards = sum(yardsGained[HeismanRush==1]), 
+                        
+                        # Game Rushing TD
+                        RushingTD = sum(RushingTouchdownbyHeisman), 
+                        
+                        # Game Yards Returning 
+                        GameReturnYards = sum(yardsGained[HeismanReturn==1]), 
+                        
+                        # Game Return TDs
+                        GameReturnTDS = sum(ReturnTouchdownbyHeisman), 
+                        
+                        # Game Receiving Yards
+                        GameReceivingYards = sum(yardsGained[HeismanReception==1]), 
+                        
+                        # Game receiving TDS
+                        RecivingTDS = sum(ReceivingTouchdownbyHeisman),
+                        
+                        # Game All Purpose Yards 
+                        AllPurposeYards = sum(GameRushingYards) + sum(GamePassingYards) + sum(GameReturnYards) + sum(GameReceivingYards), 
+                        
+                        # Game Touchdowns 
+                        GameTouchdowns = sum(RecivingTDS+ GameReturnTDS +RushingTD + GamePassingTDS),
+                        
+                        # Ball in Hand on third down
+                        TotalPlays3rdDown = sum(ThirdDownHeismanInvolved), 
+                        
+                        # Had ball and was successful on third down 
+                        Numberof3rdDownConversions = sum(ThirdDownSuccesswithHeisman),
+                        
+                        # Third Down success 
+                        Player3rdDownEfficiency = format(sum(ThirdDownSuccesswithHeisman)/sum(ThirdDownHeismanInvolved),2)
+                      )
+  
+  
+  
+}
+
+</code></pre>
+
+<pre><code class="language-r, heisman function test, eval = FALSE">
+EricCrouchdata &lt;- Heisman.data.prep(&quot;Nebraska&quot;, &quot;Eric Crouch \\(NEB\\)&quot;, 2001, &quot;rush&quot; )
+
+JasonWhiteData &lt;- Heisman.data.prep(&quot;Oklahoma&quot;, &quot;Jason White \\(OKLA\\)&quot;, 2003, &quot;rush&quot; )
+
+MattLeinartdata &lt;- Heisman.data.prep(&quot;USC&quot;, &quot;Matt Leinart \\(USC\\)&quot;, 2004, &quot;rush&quot; )
+
+ReggieBushData &lt;- Heisman.data.prep(&quot;USC&quot;, &quot;Reggie Bush&quot;, 2005, &quot;rush&quot;)
+
+TroySmithData &lt;- Heisman.data.prep(&quot;Ohio State&quot;, &quot;Troy Smith&quot;, 2005, &quot;rush&quot;)
+
+TimTebowData &lt;- Heisman.data.prep(&quot;Florida&quot;, &quot;Tim Tebow&quot;, 2007, &quot;rush&quot;)
+
+SamBradfordData &lt;- Heisman.data.prep(&quot;Oklahoma&quot;, &quot;Sam Bradford&quot;, 2008, &quot;rush&quot;)
+
+MarkIngramData &lt;- Heisman.data.prep(&quot;Alabama&quot;, &quot;Mark Ingram&quot;, 2009, &quot;rush&quot;)
+
+CamNewtonData &lt;- Heisman.data.prep(&quot;Auburn&quot;, &quot;Cameron Newton&quot;, 2010, &quot;rush&quot;)
+
+RG3Data &lt;- Heisman.data.prep(&quot;Baylor&quot;, &quot;Robert Griffin III&quot; , 2011, &quot;rush&quot;)
+
+Johnnyfootballdata &lt;- Heisman.data.prep(&quot;Texas A&amp;M&quot;, &quot;Johnny Manziel&quot;, 2012, &quot;rush&quot;)
+
+JameisWinstonData &lt;- Heisman.data.prep(&quot;FSU&quot;, &quot;Jameis Winston&quot;, 2013, &quot;rush&quot;)
+
+MarcusMariotaData &lt;- Heisman.data.prep(&quot;Oregon&quot;, &quot;Marcus Mariota&quot;, 2014, &quot;run&quot;)
+
+DerrickHenrydata &lt;- Heisman.data.prep(&quot;Alabama&quot;, &quot;Derrick Henry&quot;, 2015, &quot;run&quot;)
+
+LamarJacksonData &lt;- Heisman.data.prep(&quot;Louisville&quot;, &quot;Lamar Jackson&quot;, 2016, &quot;run&quot;)
+
+HHSaquonBarkley &lt;- Heisman.data.prep(&quot;Penn State&quot;, &quot;Saquon Barkley&quot;, 2017, &quot;run&quot;)
+
+HHBakerMayfield &lt;- Heisman.data.prep(&quot;Oklahoma&quot;, &quot;Baker Mayfield&quot;, 2017, &quot;run&quot;)
+
+HHJTBarret &lt;- Heisman.data.prep(&quot;OSU&quot;, &quot;J.T. Barrett&quot;, 2017, &quot;run&quot;)
+
+HHLamarJackson &lt;- Heisman.data.prep(&quot;Louisville&quot;, &quot;Lamar Jackson&quot;, 2017, &quot;run&quot;)
+
+HHBryceLove &lt;- Heisman.data.prep(&quot;Stanford&quot;, &quot;Bryce Love&quot;, 2017, &quot;run&quot;)
+
+HHJoshAdams &lt;- Heisman.data.prep(&quot;Notre Dame&quot;, &quot;Josh Adams&quot;, 2017, &quot;run&quot;)
+
+</code></pre>
+
+<pre><code class="language-r, place into one dataset, eval = FALSE">
+AllPrviousHeisman &lt;- rbind(EricCrouchdata,RG3Data,HHSaquonBarkley, HHJTBarret, 
+                           HHLamarJackson, HHBryceLove,  HHJoshAdams, HHBakerMayfield,LamarJacksonData,
+                           DerrickHenrydata, MarcusMariotaData,  
+                           Johnnyfootballdata, JameisWinstonData, CamNewtonData, 
+                           MarkIngramData, JasonWhiteData, SamBradfordData, MattLeinartdata, ReggieBushData, TroySmithData, TimTebowData  )
+
+</code></pre>
+
+<pre><code class="language-r, add custom counts and remove funny names, eval=FALSE">
+AllPrviousHeisman &lt;-  AllPrviousHeisman %&gt;% ungroup() %&gt;%
+                          mutate( 
+                            player = 
+                            ifelse(
+                              player == 'Eric Crouch \\(NEB\\)', 'Eric Crouch', 
+                            ifelse(
+                              player == 'Jason White \\(OKLA\\)', 'Jason White',
+                            ifelse(
+                              player == 'Matt Leinart \\(USC\\)', 'Matt Leinart',
+                            ifelse( 
+                              player == &quot;Lamar Jackson&quot; &amp; year == 2016, &quot;Lamar Jackson 2016&quot;, 
+                            ifelse(
+                              player == &quot;Lamar Jackson&quot; &amp; year == 2017, &quot;Lamar Jackson 2017&quot;,
+                            
+                              player
+                            )
+                            )
+                            ))))
+
+
+
+AllPrviousHeisman &lt;- AllPrviousHeisman %&gt;% ungroup() %&gt;%
+  group_by(player) %&gt;%
+                      mutate(
+                        # create columns for runnings Games
+                        CumulativePassAttemps = cumsum(GamePasses),
+                        CumulativeRushAttepmts = cumsum(GameRushes),
+                        CumulativeCatches = cumsum(GameCatches), 
+                        CumulativeBeenSacked = cumsum(GameSacked), 
+                        CumulativePassYards = cumsum(GamePassingYards), 
+                        CumulativePassingTDs = cumsum(GamePassingTDS), 
+                        CumulativeRushingYards = cumsum(GameRushingYards),
+                        CumulativeRushingTDs = cumsum(RushingTD),
+                        CumulativeReturnYards = cumsum(GameReturnYards), 
+                        CumulativeReturnTDs = cumsum(GameReturnTDS),
+                        CumulativeReceivingYards = cumsum(GameReceivingYards), 
+                        CumulativeReceivingTDs = cumsum(RecivingTDS), 
+                        CumulativeAllPurposeYards = cumsum(AllPurposeYards),
+                        CumulativeAllTouchdowns = cumsum(GameTouchdowns)
+                                              ) %&gt;% ungroup()
+
+
+
+
+</code></pre>
+
+<pre><code class="language-r, send it, eval = FALSE">
+ write.csv(AllPrviousHeisman,'C:/Users/John/Desktop/John Friel/Examples of Work/AllBlog/HeismanwithTabsandSummary/AllPrviousHeisman.csv')
+
+
+
+</code></pre>
 
 <p><div class="iframe_container"></p>
 
@@ -93,7 +383,22 @@
     </div>
     
 
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.11.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
     
+<script src="/js/math-code.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 
     
   </body>

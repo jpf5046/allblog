@@ -36,7 +36,7 @@ Let&amp;rsquo;s Grab all Stocks on the NYSE The following script will run rvest 
       <pubDate>Sun, 29 Oct 2017 00:00:00 +0000</pubDate>
       
       <guid>/2017/10/29/heismaninfo-rmd/</guid>
-      <description>ghfghfg</description>
+      <description>library(readr) library(magrittr) library(dplyr) files = list.files(pattern = &amp;quot;*.csv&amp;quot;) # Loads every year from 2001 to 2017 tbl = lapply(files, read_csv) %&amp;gt;% bind_rows() # add a tag if it was a touchdown or not tbl &amp;lt;- tbl %&amp;gt;% mutate( TouchdownY_N = ifelse(grepl(paste(&#39;.*&#39;,&amp;quot;touchdown&amp;quot;, &#39;.*&#39;, sep=&amp;quot;&amp;quot;), description) | grepl(paste(&#39;.*&#39;,&amp;quot;TD&amp;quot;, &#39;.*&#39;, sep=&amp;quot;&amp;quot;),description) | grepl(paste(&#39;.*&#39;,&amp;quot;TOUCHDOWN&amp;quot;, &#39;.*&#39;, sep=&amp;quot;&amp;quot;),description) , 1, 0) ) # add a tag if it was a 3rd down tbl &amp;lt;- tbl %&amp;gt;% mutate( ThirdDownY_N = ifelse( tbl$down == 3, 1,0) ) # add a tag if it was a 1st down tbl &amp;lt;- tbl %&amp;gt;% mutate( Resultedin1stDown = ifelse(grepl(paste(&#39;.</description>
     </item>
     
     <item>
