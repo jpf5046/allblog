@@ -59,7 +59,7 @@
 
   <article class="article">
     
-    <span class="article-duration">3 min read</span>
+    <span class="article-duration">4 min read</span>
     
 
     <h1 class="article-title">StockScrapeR</h1>
@@ -104,6 +104,7 @@ abcs &lt;- c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e
 for (i in abcs) {
   
   # this is the website that the loop is getting information from
+  # this is the highlighted part in the picture below
   url &lt;- paste(&quot;http://eoddata.com/stocklist/NYSE/&quot;, i, &quot;.htm&quot;, sep=&quot;&quot;)
   
   url &lt;- read_html(url)
@@ -133,12 +134,20 @@ for (i in abcs) {
   
 }
 
+head(allnyse)
+
+tail(allnyse)
+
 
 </code></pre>
 
 <p>The loop changes the highlighted part below and then grabs the tickers circled in blue. After the loop runs, we will have all stock tickers.</p>
 
-<p>\center <img src="/images/LoopGrabbingEachTicker.PNG" alt="" /> \center</p>
+<p><img src="/images/ChangeURLStockScrapR.PNG" alt="" /></p>
+
+<p>And this is the outout we get running the <code>head(allnyse)</code> and <code>tail(allnyse)</code></p>
+
+<p><img src="/images/allnyseHeadandTail.PNG" alt="" /></p>
 
 <h1 id="starting-nasdaq">Starting NASDAQ</h1>
 
@@ -178,8 +187,15 @@ for (i in abcs) {
   
 }
 
+head(allnasdaq)
+
+tail(allnasdaq)
 
 </code></pre>
+
+<p>Here is the output we are expecting:</p>
+
+<p><img src="/images/allnasdaqHeadandTail.PNG" alt="" /></p>
 
 <h1 id="comebine-both-datasets">Comebine both Datasets</h1>
 
@@ -193,18 +209,23 @@ allstocks &lt;- transform(allstocks, closeprice = as.numeric(closeprice))
 
 allstocks &lt;- unique(allstocks)
 
-
 </code></pre>
 
-<p>Okay, I&rsquo;m a risky investor, so let&rsquo;s look at stocks that cost between 2.50 and 2.75 :</p>
+<p>Okay, I&rsquo;m a risky investor, so let&rsquo;s look at stocks that cost between 2.50 and 2.70 :</p>
 
-<pre><code class="language-r">StockstoInvest &lt;- allstocks %&gt;% filter(closeprice &gt;= 2.5 &amp; closeprice &lt; 2.75)
+<pre><code class="language-r">StockstoInvest &lt;- allstocks %&gt;% filter(closeprice &gt;= 2.50 &amp; closeprice &lt; 2.70)
+
+StockstoInvest &lt;- unique(StockstoInvest)
 
 head(StockstoInvest)
 
 </code></pre>
 
-<p>I have 16 stocks I can look at, but let&rsquo;s use <code>webshot</code> to do the heavy lifting for us:</p>
+<p>Quick look at the stocks. I have a total of 16, let&rsquo;s look at the top 6:</p>
+
+<p><img src="/images/headStockstoInvest.PNG" alt="" /></p>
+
+<p>I have 12 stocks I can look at, but let&rsquo;s use <code>webshot</code> to do the heavy lifting for us:</p>
 
 <pre><code class="language-r">
 
@@ -218,7 +239,15 @@ for (i in StockstoInvest$stockticker) {
   webshot(wurlShot, file = paste('testfolder/',i, '.png', sep =''),  selector = &quot;.marginT5px img&quot;)
  
 }
+
+
 </code></pre>
+
+<p>The loop above runs each of the 16 tickers we narrowed to in the chunk above and takes a screen shot of the year price chart. The picture then saves to a folder named <code>testfolder</code>.</p>
+
+<p>Then we can look at each of the stocks one by one, check out this gif:</p>
+
+<p><img src="/images/stockScrapR.gif.gif" alt="" /></p>
 
     </div>
   </article>
