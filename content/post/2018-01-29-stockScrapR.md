@@ -40,6 +40,7 @@ abcs <- c("a", "b", "c", "d", "e", "f", "g", "h", "i",
 for (i in abcs) {
   
   # this is the website that the loop is getting information from
+  # this is the highlighted part in the picture below
   url <- paste("http://eoddata.com/stocklist/NYSE/", i, ".htm", sep="")
   
   url <- read_html(url)
@@ -69,12 +70,20 @@ for (i in abcs) {
   
 }
 
+head(allnyse)
+
+tail(allnyse)
+
 
 ```
 
 The loop changes the highlighted part below and then grabs the tickers circled in blue. After the loop runs, we will have all stock tickers. 
 
-\center ![](/images/LoopGrabbingEachTicker.PNG) \center
+ ![](/images/ChangeURLStockScrapR.PNG)
+ 
+ And this is the outout we get running the `head(allnyse)` and `tail(allnyse)`
+ 
+ ![](/images/allnyseHeadandTail.PNG)
 
 # Starting NASDAQ
 
@@ -115,8 +124,15 @@ for (i in abcs) {
   
 }
 
+head(allnasdaq)
+
+tail(allnasdaq)
 
 ```
+
+Here is the output we are expecting:
+
+ ![](/images/allnasdaqHeadandTail.PNG)
 
 # Comebine both Datasets
 
@@ -131,19 +147,25 @@ allstocks <- transform(allstocks, closeprice = as.numeric(closeprice))
 
 allstocks <- unique(allstocks)
 
-
 ```
 
-Okay, I'm a risky investor, so let's look at stocks that cost between 2.50 and 2.75 :
+Okay, I'm a risky investor, so let's look at stocks that cost between 2.50 and 2.70 :
 
 ```{r}
-StockstoInvest <- allstocks %>% filter(closeprice >= 2.5 & closeprice < 2.75)
+StockstoInvest <- allstocks %>% filter(closeprice >= 2.50 & closeprice < 2.70)
+
+StockstoInvest <- unique(StockstoInvest)
 
 head(StockstoInvest)
 
 ```
 
-I have 16 stocks I can look at, but let's use `webshot` to do the heavy lifting for us:
+Quick look at the stocks. I have a total of 16, let's look at the top 6:
+
+ ![](/images/headStockstoInvest.PNG)
+
+
+I have 12 stocks I can look at, but let's use `webshot` to do the heavy lifting for us:
 
 ```{r}
 
@@ -158,5 +180,13 @@ for (i in StockstoInvest$stockticker) {
   webshot(wurlShot, file = paste('testfolder/',i, '.png', sep =''),  selector = ".marginT5px img")
  
 }
+
+
 ```
+
+The loop above runs each of the 16 tickers we narrowed to in the chunk above and takes a screen shot of the year price chart. The picture then saves to a folder named `testfolder`. 
+
+Then we can look at each of the stocks one by one, check out this gif:
+
+ ![](/images/stockScrapR.gif.gif)
 
