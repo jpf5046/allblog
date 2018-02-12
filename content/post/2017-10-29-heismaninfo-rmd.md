@@ -7,6 +7,15 @@ categories: []
 tags: []
 ---
 
+# Creating a Comparison Tool Between years for Heisman race 
+
+I wanted to see how different Heisman contenders compared to one another at different points in the season. In order to do that you need data. I found data from this reddit post: https://www.reddit.com/r/CFBAnalysis/comments/6htfc6/play_by_play_data_dump_20012016/ and then started to manipulate into some interesting use cases. 
+
+I load the entire dataset and then run the following function. The function breaks down Touchdowns, Attemps, Yards, Third Down conversion rates, you name it, then filters everything into a Shiny web App below. 
+
+
+
+# The Function 
 
 ```{r setup, eval=FALSE}
 library(readr)
@@ -191,6 +200,7 @@ Heisman.data.prep <- function(fun.team, fun.heisman,  fun.year, fun.rush.or.run)
 ```
 
 
+# Prep for the Shiny Web App
 
 
 ```{r, heisman function test, eval = FALSE}
@@ -311,7 +321,7 @@ AllPrviousHeisman <- AllPrviousHeisman %>% ungroup() %>%
 
 
 
-
+And then I have all the information I need to run the following app. I took the data from a play by play state to a summerized state to place into a intuitive web application.
 
 
 
